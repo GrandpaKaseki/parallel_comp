@@ -2,7 +2,7 @@
 #include <omp.h>
 using namespace std;
 
-
+// struct for node of linked list
 struct Node {
 	int data;
 	struct Node* next;
@@ -20,12 +20,12 @@ int length(struct Node* current)
 	return count;
 }
 
-
+// merging two slices of linked list
 void merge(struct Node** start1, struct Node** end1,
 	struct Node** start2, struct Node** end2)
 {
 
-	
+	// cheking which slice should go to the beginnig
 	struct Node* temp = NULL;
 	if ((*start1)->data > (*start2)->data) {
 		swap(*start1, *start2);
@@ -37,15 +37,15 @@ void merge(struct Node** start1, struct Node** end1,
 	struct Node* bendnext = (*end2)->next;
 	while (astart != aend && bstart != bendnext) {
 		if (astart->next->data > bstart->data) {
-			temp = bstart->next;
-			bstart->next = astart->next;
-			astart->next = bstart;
-			bstart = temp;
+			temp = bstart->next; // make step in right (countains bigger values) slice
+			bstart->next = astart->next; // big_start -> next element due small_start
+			astart->next = bstart; // small_start -> big_start )
+			bstart = temp; // smal_start = temp (check code above)
 		}
-		astart = astart->next;
+		astart = astart->next; // making next step in left slice;
 	}
 	if (astart == aend)
-		astart->next = bstart;
+		astart->next = bstart; // small_end -> big_start 
 	else
 		*end2 = *end1;
 }
@@ -83,7 +83,7 @@ void mergeSort(struct Node** head)
 			
 			Node* temp = end2->next;
 
-			
+			#pragma omp critical
 			merge(&start1, &end1, &start2, &end2);
 
 			if (isFirstIter)
@@ -127,14 +127,10 @@ int main()
 	struct Node* head = NULL;
 
 	// create linked list 
-	// 1->2->3->4->5->6->7 
-	push(&head, 9);
-	push(&head, 6);
-	push(&head, 5);
-	push(&head, 4);
-	push(&head, 13);
-	push(&head, 2);
-	push(&head, 1);
+	// 10000 -> 9999 -> ... -> 0
+	for (int i = 10000;i > 0;i--){
+		push(&head, i);
+	}
 
 	mergeSort(&head);
 
