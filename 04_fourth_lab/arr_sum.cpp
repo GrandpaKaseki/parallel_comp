@@ -9,7 +9,7 @@ int main() {
 
     for (int i; i< k; i++)
     {
-        arr[i] = 2;
+        arr[i] = (i + 1) ^ 2;
     }
 
     int sum = 0;

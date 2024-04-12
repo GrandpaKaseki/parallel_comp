@@ -40,7 +40,7 @@ void merge(struct Node** start1, struct Node** end1,
 			temp = bstart->next; // make step in right (countains bigger values) slice
 			bstart->next = astart->next; // big_start -> next element due small_start
 			astart->next = bstart; // small_start -> big_start )
-			bstart = temp; // smal_start = temp (check code above)
+			bstart = temp; // big_start = temp (check code above)
 		}
 		astart = astart->next; // making next step in left slice;
 	}
